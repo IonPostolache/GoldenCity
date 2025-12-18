@@ -4,6 +4,22 @@ import { FiMenu, FiX } from 'react-icons/fi';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [connectedAccount, setConnectedAccount] = useState(null);
+
+  const handleConnectClick = async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setConnectedAccount(accounts[0]);
+        alert(`Connected: ${accounts[0]}`);
+      } catch (error) {
+        console.error('User rejected the connection', error);
+        alert('Connection rejected.');
+      }
+    } else {
+      alert('Please install MetaMask or another Ethereum wallet!');
+    }
+  };
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -20,8 +36,8 @@ function Navbar() {
           <div className="flex">
             <Link to="/" className="flex items-center">
               <svg width="30" height="35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="15" cy="20" r="10" stroke="#0682ff"/>
-                  <circle cx="15" cy="20" r="6" stroke="#0682ff" strokeWidth="3"/>
+                <circle cx="15" cy="20" r="10" stroke="#0682ff"/>
+                <circle cx="15" cy="20" r="6" stroke="#0682ff" strokeWidth="3"/>
               </svg>  
               <span className="text-2xl font-bold text-primary-600 mt-1.5">GoldenCity</span>
             </Link>
@@ -40,8 +56,9 @@ function Navbar() {
             ))}
             <button
               className="btn"
+              onClick={handleConnectClick}
             >
-              Connect
+              {connectedAccount ? `${connectedAccount.slice(0,6)}...${connectedAccount.slice(-4)}` : 'Connect'}
             </button>
           </div>
 
@@ -73,9 +90,12 @@ function Navbar() {
               ))}
               <button
                 className="block px-3 py-2 text-base font-medium text-white bg-primary-600 hover:bg-primary-700"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  handleConnectClick();
+                }}
               >
-                Connect
+                {connectedAccount ? `${connectedAccount.slice(0,6)}...${connectedAccount.slice(-4)}` : 'Connect'}
               </button>
             </div>
           </div>

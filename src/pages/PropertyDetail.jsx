@@ -3,9 +3,13 @@ import { motion } from 'framer-motion';
 import { FiHome, FiMaximize2, FiCalendar, FiTrendingUp, FiUsers, FiDollarSign, FiGrid } from 'react-icons/fi';
 import { FacebookShareButton, TwitterShareButton, LinkedinShareButton } from 'react-share';
 import { FaFacebook, FaTwitter, FaLinkedin, FaEthereum, FaWallet } from 'react-icons/fa';
+import { useState } from 'react';
 
 function PropertyDetail() {
   const { id } = useParams();
+  const handleConnectWalletClick = () => {
+  alert('Wallet connection is not implemented yet.');
+  };
 
   const property = {
     id: parseInt(id),
@@ -73,6 +77,8 @@ function PropertyDetail() {
     }
   };
 
+  const [mainImage, setMainImage] = useState(property.images[0]);
+
   const shareUrl = window.location.href;
 
   return (
@@ -96,30 +102,37 @@ function PropertyDetail() {
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
             {/* Image Gallery */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-4"
-            >
-              <div className="h-96 rounded-lg overflow-hidden">
-                <img
-                  src={property.images[0]}
-                  alt={property.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                {property.images.slice(1).map((image, index) => (
-                  <div key={index} className="h-32 rounded-lg overflow-hidden">
-                    <img
-                      src={image}
-                      alt={`${property.title} - ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-4"
+              >
+                {/** Add state for selected image **/}
+                {/*const [mainImage, setMainImage] = useState(property.images[0]);*/}
+
+                <div className="h-96 rounded-lg overflow-hidden">
+                  <img
+                    src={mainImage}
+                    alt={property.title}
+                    className="w-full h-full object-cover cursor-pointer"
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  {property.images.map((image, index) => (
+                    <div key={index} className="h-32 rounded-lg overflow-hidden">
+                      <img
+                        src={image}
+                        alt={`${property.title} - ${index}`}
+                        className="w-full h-full object-cover cursor-pointer"
+                        onClick={() => setMainImage(image)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+
 
             {/* Property Details */}
             <motion.div
@@ -288,7 +301,9 @@ function PropertyDetail() {
                 View 3D version
               </Link>
 
-              <button className="btn w-full mb-4 flex items-center justify-center">
+              <button className="btn w-full mb-4 flex items-center justify-center"
+                onClick={handleConnectWalletClick}
+                >
                 <FaWallet className="mr-2" />
                 Connect Wallet to Invest
               </button>
