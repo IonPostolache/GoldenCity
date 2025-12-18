@@ -51,3 +51,15 @@ npm install
 ```bash
 npm start
 ```
+
+## Updates / Fixes
+
+* **Fixed the image gallery: clicking a thumbnail updates the main image.
+
+* **Added Metamask wallet connection on the "Connect Wallet" button.
+
+* **Added a warning message "Wallet connection is not implemented yet" on the "Connect Wallet to Invest" button.
+
+* **Verified UI responsiveness across devices.
+
+* **Minor interactions (e.g., "Schedule Consultation") remain unchanged.
